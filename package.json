@@ -1,0 +1,45 @@
+{
+  "name": "gulp-url-prefixer",
+  "version": "0.0.1",
+  "description": "prefix urls of static assets in a flexible way",
+  "main": "index.js",
+  "scripts": {
+    "standard": "standard",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha test/**/test.js -- --require should -R spec",
+    "coverage": "cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": "cainiaokan/gulp-url-prefixer",
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "url",
+    "prefix",
+    "cdn"
+  ],
+  "author": "Louie Lang <cainiaokan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cainiaokan/gulp-url-prefixer/issues"
+  },
+  "homepage": "https://github.com/cainiaokan/gulp-url-prefixer",
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.0"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.8",
+    "gulp": "^3.9.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.2.5",
+    "pre-commit": "^1.0.10",
+    "should": "^8.2.2",
+    "standard": "^6.0.8"
+  },
+  "pre-commit": [
+    "standard",
+    "test"
+  ],
+  "engines": {
+    "node": ">=0.12"
+  }
+}
