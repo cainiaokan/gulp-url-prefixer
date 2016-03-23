@@ -1,8 +1,8 @@
 # gulp-url-prefixer
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/cainiaokan/gulp-url-prefixer)
-[![Build Status](https://travis-ci.org/cainiaokan/gulp-pack.svg?branch=master)](https://travis-ci.org/cainiaokan/gulp-url-prefixer) 
-[![npm version](https://img.shields.io/npm/v/gulp-dep-pack.svg)](https://www.npmjs.com/package/gulp-url-prefixer) 
-[![Dependency Status](https://david-dm.org/cainiaokan/gulp-pack.svg)](https://david-dm.org/cainiaokan/gulp-url-prefixer) 
+[![Build Status](https://travis-ci.org/cainiaokan/gulp-url-prefixer.svg?branch=master)](https://travis-ci.org/cainiaokan/gulp-url-prefixer) 
+[![npm version](https://img.shields.io/npm/v/gulp-url-prefixer)](https://www.npmjs.com/package/gulp-url-prefixer) 
+[![Dependency Status](https://david-dm.org/cainiaokan/gulp-url-prefixer.svg)](https://david-dm.org/cainiaokan/gulp-url-prefixer) 
 [![Coverage Status](https://coveralls.io/repos/github/cainiaokan/gulp-url-prefixer/badge.svg?branch=master)](https://coveralls.io/github/cainiaokan/gulp-url-prefixer?branch=master)
 
 > prefix urls of static assets in a flexible way with [Gulp-Url-Prefixer](https://github.com/cainiaokan/gulp-url-prefixer)
@@ -87,7 +87,7 @@ before prefixing
 location.href = __uri('/mywebsite/service/index.html')
 ```
 
-after prefixing (assume you config.cdn option is http://youwebsite.com/)
+after prefixing (assume you config.cdn option is `http://youwebsite.com/`)
 ```
 location.href = 'http://youwebsite.com//mywebsite/service/index.html'
 ```
