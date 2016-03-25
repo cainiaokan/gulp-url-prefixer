@@ -34,19 +34,23 @@ Type: `object`
 
 Set options described below from its properties. 
   
-#### options.matches
-Type: `object`
+#### options.tags
+Type: `array`
 Default:
 ```js
-{
-  'script': 'src',
-  'link': 'href',
-  'a': 'href',
-  'img': 'src'
-}
+['script', 'link', 'a', 'img', 'embed']
 ```
 
-Set matched tags & attributes
+Set matched tags
+
+#### options.attrs
+Type: `array`
+Default:
+```js
+['href', 'src']
+```
+
+Set matched attributes
 
 #### options.cdn
 Type: `string\function`
@@ -56,7 +60,6 @@ cdn url used to prefix the local paths.
 if it's a function, return value will be used as cdn url.
 
 ```js
-
 const path = require('path')
 
 const pathToCdn = (pathname) =>

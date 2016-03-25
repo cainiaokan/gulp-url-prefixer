@@ -1,0 +1,13 @@
+@import url(../../common/common.css);
+
+body {
+  background: url('/common/img/test.png')
+}
+
+header {
+  background: url("../../common/img/test.gif")
+}
+
+.logo {
+  background: url(http://mylogo.com/logo.png)
+}

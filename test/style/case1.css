@@ -1,0 +1,13 @@
+@import url(http://sta.mycdn.com/common/common.css);
+
+body {
+  background: url('http://img.mycdn.com/common/img/test.png')
+}
+
+header {
+  background: url("http://img.mycdn.com/common/img/test.gif")
+}
+
+.logo {
+  background: url(http://mylogo.com/logo.png)
+}

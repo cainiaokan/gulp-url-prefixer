@@ -4,12 +4,8 @@ var through = require('through2')
 var PLUGIN_NAME = 'gulp-url-prefixer'
 
 var default_conf = {
-  matches: {
-    'script': 'src',
-    'link': 'href',
-    'a': 'href',
-    'img': 'src'
-  },
+  tags: ['script', 'link', 'a', 'img', 'embed'],
+  attrs: ['src', 'href'],
   cdn: 'http://localhost/',
   placeholderFuncName: '__uri'
 }
@@ -23,17 +19,8 @@ var processConf = function (conf) {
 }
 
 var buildHtmlRegex = function () {
-  var matches = config.matches
-  var tags = Object.keys(matches)
-  var filter = {}
-  var attrs = []
-  tags.forEach(function (tag) {
-    var attr = matches[tag]
-    if (!filter[attr]) {
-      attrs.push(attr)
-      filter[attr] = true
-    }
-  })
+  var tags = config.tags
+  var attrs = config.attrs
   return new RegExp('<\\s*(' + tags.join('|') + ')([\\s\\S]+?)(' + attrs.join('|') + ')=([\'"]?)([\\s\\S]+?)(\\?[\\s\\S]*?)?\\4', 'g')
 }
 
@@ -69,9 +56,9 @@ var buildUrl = function (file, url, cdn) {
 
 var autoHtmlUrl = function (file, reg) {
   var cdn = config.cdn
+
   var contents = file.contents.toString().replace(reg, function (match, tagName, otherAttrs, attrName, delimiter, url, search) {
     if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
-      if (config.matches[tagName] !== attrName) return
       url = buildUrl(file, url, typeof cdn === 'function' ? cdn(url) : cdn)
       delimiter = delimiter || ''
       search = search || ''
@@ -114,6 +101,7 @@ var autoJsUrl = function (file, reg) {
       return match
     }
   })
+
   file.contents = new Buffer(contents)
 }
 
