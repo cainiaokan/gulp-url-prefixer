@@ -1,6 +1,6 @@
 {
   "name": "gulp-url-prefixer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "prefix urls of static assets in a flexible way",
   "main": "index.js",
   "scripts": {
