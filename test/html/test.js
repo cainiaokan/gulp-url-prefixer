@@ -9,13 +9,11 @@ var through = require('through2')
 
 describe('gulp-url-prefixer', function () {
   describe('auto prefix urls in html', function () {
-    it('should has appropriate url prefix', function (done) {
+    it('should has right url prefix', function (done) {
       gulp.task('auto-prefixer-html', function () {
         var resultContents = fs.readFileSync(path.join(__dirname, 'case1.html'), {encoding: 'utf-8'})
-        var targetUrl = 'app/page1/index.html'
-        if (process.platform === 'win32') {
-          targetUrl = targetUrl.replace(/\/+/g, path.sep)
-        }
+        var targetUrl = process.platform === 'win32' ? 'app\\page1\\index.html' : 'app/page1/index.html'
+
         var stream = through.obj(function (file, encoding, cb) {
           if (file.relative === targetUrl) {
             file.contents.toString().should.be.eql(resultContents)
@@ -35,7 +33,7 @@ describe('gulp-url-prefixer', function () {
 
         return gulp.src(path.join(__dirname, 'app/**/*.html'), {base: __dirname})
           .pipe(autoUrl.html({
-            cdn: ext2CDN
+            prefix: ext2CDN
           }))
           .pipe(stream)
       })

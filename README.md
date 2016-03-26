@@ -23,7 +23,7 @@ const urlPrefixer = require('gulp-url-prefixer');
 gulp.task('default', () =>
   gulp.src('src/**/*.html')
     .pipe(urlPrefixer.html({
-      cdn: 'http://yourcdn.com/myapp/'
+      prefix: 'http://yourcdn.com/myapp/'
     }))
     .pipe(gulp.dest('dist'))
 );
@@ -52,12 +52,12 @@ Default:
 
 Set matched attributes
 
-#### options.cdn
+#### options.prefix
 Type: `string\function`
 Default: `http://localhost/`
 
-cdn url used to prefix the local paths.
-if it's a function, return value will be used as cdn url.
+used to prefix the local paths of assets.
+if it's a function, the return value will be used.
 
 ```js
 const path = require('path')
@@ -76,7 +76,7 @@ const pathToCdn = (pathname) =>
 
 gulp.task('default', =>
   gulp.src('src/**/*.html')
-    .pipe(urlPrefixer.html({cdn: pathToCdn}))
+    .pipe(urlPrefixer.html({prefix: pathToCdn}))
     .pipe(gulp.dest('dist'))
 );
 ```
@@ -85,17 +85,58 @@ gulp.task('default', =>
 Type: `string`
 Default: `__uri`
 
-before prefixing
+set placeholder function name.
+
+before
 ```js
 location.href = __uri('/mywebsite/service/index.html')
 ```
 
-after prefixing (assume you config.cdn option is `http://youwebsite.com/`)
-```
-location.href = 'http://youwebsite.com//mywebsite/service/index.html'
+after (assume you config.prefix option is `http://youwebsite.com/`)
+```js
+location.href = 'http://youwebsite.com/mywebsite/service/index.html'
 ```
 
-set placeholder function name. this is where the prefixer starts the url prefixing job in js files
+### API
+
+#### html
+
+prefix local urls of html like files
+
+```js
+gulp.src('src/**/*.{html,tmpl}')
+  .pipe(urlPrefixer.html({
+    prefix: 'http://yourcdn.com/myapp/',
+    tags: ['script', 'link', 'img']
+  }))
+  .pipe(gulp.dest('dist'))
+```
+
+#### css
+
+prefix local urls of css like files
+
+```js
+gulp.src('src/**/*.{css,less}')
+  .pipe(urlPrefixer.css({
+    prefix: 'http://yourcdn.com/myapp/'
+  }))
+  .pipe(gulp.dest('dist'))
+```
+
+#### js
+
+prefix local urls of js like files
+
+```js
+gulp.src('src/**/*.{js,html}')
+  .pipe(urlPrefixer.js({
+    prefix: 'http://yourcdn.com/myapp/',
+    placeholderFuncName: '__prefix'
+  }))
+  .pipe(gulp.dest('dist'))
+```
+
 
 ## License
 

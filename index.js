@@ -6,7 +6,7 @@ var PLUGIN_NAME = 'gulp-url-prefixer'
 var default_conf = {
   tags: ['script', 'link', 'a', 'img', 'embed'],
   attrs: ['src', 'href'],
-  cdn: 'http://localhost/',
+  prefix: 'http://localhost/',
   placeholderFuncName: '__uri'
 }
 
@@ -32,8 +32,8 @@ var buildJsRegex = function () {
   return new RegExp(config.placeholderFuncName + '\\s*\\(\\s*([\'"])([\\s\\S]+?)(\\?[\\s\\S]*?)?\\1([\\s\\S]*?)\\)', 'g')
 }
 
-var buildUrl = function (file, url, cdn) {
-  if (path.isAbsolute(url)) {
+var buildUrl = function (file, url, prefix) {
+  if (url.charAt(0) === '/') {
     url = url.substring(1)
   } else {
     url = path.join(path.dirname(file.relative), url)
@@ -41,25 +41,25 @@ var buildUrl = function (file, url, cdn) {
 
   url = path.normalize(url)
 
-  if (cdn.charAt(cdn.length - 1) !== '/') {
-    cdn += '/'
+  if (prefix.charAt(prefix.length - 1) !== '/') {
+    prefix += '/'
   }
 
-  url = cdn + url
+  url = prefix + url
 
   if (process.platform === 'win32') {
-    url = url.replace(/\\+/g, path.posix.sep)
+    url = url.replace(/\\+/g, '/')
   }
 
   return url
 }
 
 var autoHtmlUrl = function (file, reg) {
-  var cdn = config.cdn
+  var prefix = config.prefix
 
   var contents = file.contents.toString().replace(reg, function (match, tagName, otherAttrs, attrName, delimiter, url, search) {
     if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
-      url = buildUrl(file, url, typeof cdn === 'function' ? cdn(url) : cdn)
+      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
       delimiter = delimiter || ''
       search = search || ''
       return '<' + tagName + otherAttrs + attrName + '=' + delimiter + url + search + delimiter + search
@@ -71,12 +71,12 @@ var autoHtmlUrl = function (file, reg) {
 }
 
 var autoCssUrl = function (file, reg) {
-  var cdn = config.cdn
+  var prefix = config.prefix
   var contents = file.contents.toString().replace(reg, function (match, delimiter, url, search) {
     if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
       delimiter = delimiter || ''
       search = search || ''
-      url = buildUrl(file, url, typeof cdn === 'function' ? cdn(url) : cdn)
+      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
       return 'url(' + delimiter + url + search + delimiter + ')'
     } else {
       return match
@@ -86,7 +86,7 @@ var autoCssUrl = function (file, reg) {
 }
 
 var autoJsUrl = function (file, reg) {
-  var cdn = config.cdn
+  var prefix = config.prefix
 
   var contents = file.contents.toString().replace(reg, function (match, delimiter, url, search, appendix) {
     if (url.indexOf(':') === -1) {
@@ -94,7 +94,7 @@ var autoJsUrl = function (file, reg) {
       search = search || ''
       appendix = appendix || ''
 
-      url = buildUrl(file, url, typeof cdn === 'function' ? cdn(url) : cdn)
+      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
       url = delimiter + url + search + delimiter + appendix
       return url
     } else {
