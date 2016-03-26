@@ -1,7 +1,7 @@
 # gulp-url-prefixer
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/cainiaokan/gulp-url-prefixer)
 [![Build Status](https://travis-ci.org/cainiaokan/gulp-url-prefixer.svg?branch=master)](https://travis-ci.org/cainiaokan/gulp-url-prefixer) 
-[![npm version](https://img.shields.io/npm/vgulp-url-prefixer.svg)](https://www.npmjs.com/package/gulp-url-prefixer) 
+[![npm version](https://img.shields.io/npm/v/gulp-url-prefixer.svg)](https://www.npmjs.com/package/gulp-url-prefixer) 
 [![Dependency Status](https://david-dm.org/cainiaokan/gulp-url-prefixer.svg)](https://david-dm.org/cainiaokan/gulp-url-prefixer) 
 [![Coverage Status](https://coveralls.io/repos/github/cainiaokan/gulp-url-prefixer/badge.svg?branch=master)](https://coveralls.io/github/cainiaokan/gulp-url-prefixer?branch=master)
 
