@@ -28,6 +28,8 @@ describe('gulp-url-prefixer', function () {
               return 'http://j1.mycdn.com'
             case '.js':
               return 'http://j2.mycdn.com'
+            case '.html':
+              return 'http://www.mysite.com'
           }
         }
 

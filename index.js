@@ -62,7 +62,7 @@ var autoHtmlUrl = function (file, reg) {
       url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
       delimiter = delimiter || ''
       search = search || ''
-      return '<' + tagName + otherAttrs + attrName + '=' + delimiter + url + search + delimiter + search
+      return '<' + tagName + otherAttrs + attrName + '=' + delimiter + url + search + delimiter
     } else {
       return match
     }
