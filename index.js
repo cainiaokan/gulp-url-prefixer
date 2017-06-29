@@ -18,10 +18,14 @@ var processConf = function (conf) {
   })
 }
 
-var buildHtmlRegex = function () {
+var buildHtmlTagRegex = function () {
   var tags = config.tags
+  return new RegExp('<\\s*(' + tags.join('|') + ')[\\s\\S]*?>', 'g')
+}
+
+var buildHtmlAttrRegex = function () {
   var attrs = config.attrs
-  return new RegExp('<\\s*(' + tags.join('|') + ')([\\s\\S]+?)(' + attrs.join('|') + ')=([\'"]?)([\\s\\S]+?)(\\?[\\s\\S]*?)?\\4', 'g')
+  return new RegExp('(' + attrs.join('|') + ')=([\'"]?)([\\s\\S]*?)(\\?[\\s\\S]*?)?\\2', 'g')
 }
 
 var buildCssRegex = function () {
@@ -54,18 +58,19 @@ var buildUrl = function (file, url, prefix) {
   return url
 }
 
-var autoHtmlUrl = function (file, reg) {
+var autoHtmlUrl = function (file, tagReg, attrReg) {
   var prefix = config.prefix
-
-  var contents = file.contents.toString().replace(reg, function (match, tagName, otherAttrs, attrName, delimiter, url, search) {
-    if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
-      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
-      delimiter = delimiter || ''
-      search = search || ''
-      return '<' + tagName + otherAttrs + attrName + '=' + delimiter + url + search + delimiter
-    } else {
-      return match
-    }
+  var contents = file.contents.toString().replace(tagReg, function (match, tagName) {
+    return match.replace(attrReg, function (__, attrName, delimiter, url, search) {
+      if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
+        url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
+        delimiter = delimiter || ''
+        search = search || ''
+        return attrName + '=' + delimiter + url + search + delimiter
+      } else {
+        return __
+      }
+    })
   })
   file.contents = new Buffer(contents)
 }
@@ -131,12 +136,13 @@ exports.css = function (conf) {
 
 exports.html = function (conf) {
   processConf(conf)
-  var reg = buildHtmlRegex()
+  var tagReg = buildHtmlTagRegex()
+  var attrReg = buildHtmlAttrRegex()
   return through.obj(function (file, encoding, cb) {
     if (file.isStream()) {
       return cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'))
     }
-    autoHtmlUrl(file, reg)
+    autoHtmlUrl(file, tagReg, attrReg)
     cb(null, file)
   })
 }

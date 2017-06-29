@@ -30,6 +30,8 @@ describe('gulp-url-prefixer', function () {
               return 'http://j2.mycdn.com'
             case '.html':
               return 'http://www.mysite.com'
+            case '.jpg':
+              return 'http://img.mycdn.com'
           }
         }
 
