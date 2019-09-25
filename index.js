@@ -38,7 +38,6 @@ var buildJsRegex = function () {
 }
 
 var buildUrl = function (file, url, prefix, splitOn) {
-  console.log(splitOn);
   if (splitOn !== '') {
     urls = url.split(splitOn);
     for (let i = 0; i < urls.length; i++) {
