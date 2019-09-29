@@ -30,6 +30,7 @@ describe('gulp-url-prefixer', function () {
               return 'http://j2.mycdn.com'
             case '.html':
               return 'http://www.mysite.com'
+            case '.png':
             case '.jpg':
               return 'http://img.mycdn.com'
           }
@@ -37,7 +38,9 @@ describe('gulp-url-prefixer', function () {
 
         return gulp.src(path.join(__dirname, 'app/**/*.html'), {base: __dirname})
           .pipe(autoUrl.html({
-            prefix: ext2CDN
+            prefix: ext2CDN,
+            splitOn: ',',
+            attrs: ['href', 'src', 'data-src', 'data-srcset']
           }))
           .pipe(stream)
       })

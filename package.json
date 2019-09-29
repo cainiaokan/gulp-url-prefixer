@@ -1,6 +1,6 @@
 {
   "name": "gulp-url-prefixer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "prefix urls of static assets in a flexible way",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/cainiaokan/gulp-url-prefixer",
   "dependencies": {
-    "gulp-util": "^3.0.7",
-    "through2": "^2.0.0"
+    "gulp-util": "^3.0.8",
+    "through2": "^3.0.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.8",

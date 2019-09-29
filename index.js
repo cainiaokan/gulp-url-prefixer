@@ -26,7 +26,7 @@ var buildHtmlTagRegex = function () {
 
 var buildHtmlAttrRegex = function () {
   var attrs = config.attrs
-  return new RegExp('(' + attrs.join('|') + ')=([\'"]?)([\\s\\S]*?)(\\?[\\s\\S]*?)?\\2', 'g')
+  return new RegExp('\\s+(' + attrs.join('|') + ')=([\'"]?)([\\s\\S]*?)(\\?[\\s\\S]*?)?\\2', 'g')
 }
 
 var buildCssRegex = function () {
@@ -39,16 +39,14 @@ var buildJsRegex = function () {
 
 var buildUrl = function (file, url, prefix, splitOn) {
   if (splitOn !== '') {
-    urls = url.split(splitOn);
+    var urls = url.split(splitOn)
     for (let i = 0; i < urls.length; i++) {
-      let url = urls[i].trim();
-      urls[i] = _buildUrl(file, url, prefix);
+      let url = urls[i].trim()
+      urls[i] = _buildUrl(file, url, prefix)
     }
-
-    return urls.join(splitOn);
-  }
-  else {
-    return _buildUrl(file, url, prefix);
+    return urls.join(splitOn)
+  } else {
+    return _buildUrl(file, url, prefix)
   }
 }
 
@@ -82,7 +80,7 @@ var autoHtmlUrl = function (file, tagReg, attrReg) {
         url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix, config.splitOn)
         delimiter = delimiter || ''
         search = search || ''
-        return attrName + '=' + delimiter + url + search + delimiter
+        return ' ' + attrName + '=' + delimiter + url + search + delimiter
       } else {
         return __
       }

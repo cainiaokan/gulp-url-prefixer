@@ -59,24 +59,29 @@ Default: `http://localhost/`
 used to prefix the local paths of assets.
 if it's a function, the return value will be used.
 
+eg:
 ```js
 const path = require('path')
 
-const pathToCdn = (pathname) =>
+const ext2CDN = pathname => {
   const extname = path.extname(pathname)
-  let cdn = null
+  let prefix = null
   switch (extname) {
-    case '.js':
-    cdn = 'http://j1.mycdn.com/mywebsite/'
+  case '.js':
+    prefix = 'http://j1.mycdn.com/mywebsite'
     break;
-    case '.css':
-    cdn = 'http://j2.mycdn.com/mywebsite/'
+  case '.css':
+    prefix = 'http://j2.mycdn.com/mywebsite'
     break;
+  default:
+    prefix = 'http://www.mycdn.com/mywebsite'
   }
+  return prefix
+}
 
 gulp.task('default', =>
   gulp.src('src/**/*.html')
-    .pipe(urlPrefixer.html({prefix: pathToCdn}))
+    .pipe(urlPrefixer.html({prefix: ext2CDN}))
     .pipe(gulp.dest('dist'))
 );
 ```
@@ -87,21 +92,32 @@ Default: `__uri`
 
 set placeholder function name.
 
-before
+before build
 ```js
 location.href = __uri('/mywebsite/service/index.html')
 ```
 
-after (assume you config.prefix option is `http://youwebsite.com/`)
+after build (assume you config.prefix option is `http://youwebsite.com/`)
 ```js
 location.href = 'http://youwebsite.com/mywebsite/service/index.html'
 ```
 
 #### options.splitOn
 Type: `string`
-Default: `''`
+Default: `null`
 
 Allows the prefixer to split multiple values in an attribute, needed to prefix srcset.
+
+eg:
+before build(assume you config.splitOn option is `,` and config.prefix is `http://youwebsite.com/mywebsite`)
+```js
+const imgArr = __uri('./images/img01.png,/images/img02.jpeg')
+```
+
+after build
+```js
+location.href = 'http://youwebsite.com/mywebsite/images/img01.png,http://youwebsite.com/mywebsite/images/img02.jpeg'
+```
 
 ### API
 

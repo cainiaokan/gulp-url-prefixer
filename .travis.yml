@@ -1,8 +1,10 @@
 sudo: false
 language: node_js
 node_js:
-  - 'stable'
-  - '5'
+  - 'node'
+  - '10'
+  - '8'
+  - '6'
   - '4'
   - '0.10'
 after_success:

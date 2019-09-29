@@ -33,7 +33,8 @@ describe('gulp-url-prefixer', function () {
 
         return gulp.src(path.join(__dirname, 'app/**/*.js'), {base: __dirname})
           .pipe(autoUrl.js({
-            prefix: ext2CDN
+            prefix: ext2CDN,
+            splitOn: ','
           }))
           .pipe(stream)
       })
