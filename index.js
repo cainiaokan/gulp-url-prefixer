@@ -7,7 +7,8 @@ var default_conf = {
   tags: ['script', 'link', 'a', 'img', 'embed'],
   attrs: ['src', 'href'],
   prefix: 'http://localhost/',
-  placeholderFuncName: '__uri'
+  placeholderFuncName: '__uri',
+  splitOn: ''
 }
 
 var config = {}
@@ -36,7 +37,22 @@ var buildJsRegex = function () {
   return new RegExp(config.placeholderFuncName + '\\s*\\(\\s*([\'"])([\\s\\S]+?)(\\?[\\s\\S]*?)?\\1([\\s\\S]*?)\\)', 'g')
 }
 
-var buildUrl = function (file, url, prefix) {
+var buildUrl = function (file, url, prefix, splitOn) {
+  if (splitOn !== '') {
+    urls = url.split(splitOn);
+    for (let i = 0; i < urls.length; i++) {
+      let url = urls[i].trim();
+      urls[i] = _buildUrl(file, url, prefix);
+    }
+
+    return urls.join(splitOn);
+  }
+  else {
+    return _buildUrl(file, url, prefix);
+  }
+}
+
+var _buildUrl = function (file, url, prefix) {
   if (url.charAt(0) === '/') {
     url = url.substring(1)
   } else {
@@ -63,7 +79,7 @@ var autoHtmlUrl = function (file, tagReg, attrReg) {
   var contents = file.contents.toString().replace(tagReg, function (match, tagName) {
     return match.replace(attrReg, function (__, attrName, delimiter, url, search) {
       if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
-        url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
+        url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix, config.splitOn)
         delimiter = delimiter || ''
         search = search || ''
         return attrName + '=' + delimiter + url + search + delimiter
@@ -81,7 +97,7 @@ var autoCssUrl = function (file, reg) {
     if (url.indexOf(':') === -1 && /[\w\/\.]/.test(url.charAt(0))) {
       delimiter = delimiter || ''
       search = search || ''
-      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
+      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix, config.splitOn)
       return 'url(' + delimiter + url + search + delimiter + ')'
     } else {
       return match
@@ -99,7 +115,7 @@ var autoJsUrl = function (file, reg) {
       search = search || ''
       appendix = appendix || ''
 
-      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix)
+      url = buildUrl(file, url, typeof prefix === 'function' ? prefix(url) : prefix, config.splitOn)
       url = delimiter + url + search + delimiter + appendix
       return url
     } else {
@@ -146,4 +162,3 @@ exports.html = function (conf) {
     cb(null, file)
   })
 }
-

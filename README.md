@@ -97,6 +97,12 @@ after (assume you config.prefix option is `http://youwebsite.com/`)
 location.href = 'http://youwebsite.com/mywebsite/service/index.html'
 ```
 
+#### options.splitOn
+Type: `string`
+Default: `''`
+
+Allows the prefixer to split multiple values in an attribute, needed to prefix srcset.
+
 ### API
 
 #### html
