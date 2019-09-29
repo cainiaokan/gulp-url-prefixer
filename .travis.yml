@@ -1,11 +1,11 @@
-sudo: false
+sudo: true
 language: node_js
 node_js:
   - 'node'
   - '10'
   - '8'
   - '6'
-  - '4'
-  - '0.10'
+install:
+  sudo npm install --unsafe-perm
 after_success:
   - npm run coverage
